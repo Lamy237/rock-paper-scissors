@@ -12,7 +12,9 @@ possibleChoices.forEach((choice) => {
         playerChoiceDisplay.style.backgroundImage = `url('../img/${event.target.id}.png')`;
         playerChoice = event.target.id;
         computerChoice = generateComputerChoice();
-        incrementWinnerScore(playerChoice, computerChoice);
+        let winner = incrementWinnerScore(playerChoice, computerChoice);
+        markWinner();
+        animateLastWinnerChoice(winner);
     })
 });
 
@@ -34,9 +36,31 @@ const incrementWinnerScore = (player, computer) => {
     } else if (player === "rock" && computer === "scissors" || player === "paper" && computer === "rock"
         || player === "scissors" && computer === "paper") {
         playerScore++;
-        playerScoreDisplay.textContent = `${playerScore} PT`;
+        return playerChoiceDisplay;
     } else {
         computerScore++;
+        return computerChoiceDisplay;
+    }
+};
+
+const markWinner = () => {
+    if (playerScore > computerScore) {
+        playerScoreDisplay.textContent = `${playerScore} PT 🏆`;
         computerScoreDisplay.textContent = `${computerScore} PT`;
+    } else if (playerScore < computerScore) {
+        playerScoreDisplay.textContent = `${playerScore} PT`;
+        computerScoreDisplay.textContent = `${computerScore} PT 🏆`;
+    } else {
+        playerScoreDisplay.textContent = `${playerScore} PT`;
+        computerScoreDisplay.textContent = `${computerScore} PT`;
+    }
+};
+
+const animateLastWinnerChoice = (elementToAnimate) => {
+    if (elementToAnimate) {
+        elementToAnimate.classList.add("animate");
+        setTimeout(() => {
+            elementToAnimate.classList.remove("animate");
+        }, 1002);
     }
 };
